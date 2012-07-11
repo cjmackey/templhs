@@ -5,6 +5,8 @@ require 'date'
 require 'thread'
 require 'open4'
 
+Dir.chdir(File.dirname(__FILE__))
+
 $loaded_facter
 def num_cpus
   require 'facter'
@@ -18,7 +20,7 @@ end
 def clean_hpc
   system('mkdir -p dist/hpc')
   system('rm dist/hpc/* 2> /dev/null')
-  system('rm server-tests.tix 2> /dev/null')
+  system('rm *.tix 2> /dev/null')
   system('rm -r .hpc 2> /dev/null')
 end
 
@@ -44,7 +46,7 @@ def hlint
 end
 
 def test
-  system('rm dist/build/templhs-tests/templhs-tests')
+  clean
   build
   system('mkdir -p dist/hpc')
   system("./dist/build/templhs-tests/templhs-tests +RTS -N#{num_cpus}")

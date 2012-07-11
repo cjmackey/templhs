@@ -1,14 +1,15 @@
 module Dom.TemplTypes where
 
 
-type ID = String
+type NodeID = String
+type TagName = String
 
-data Templ = RawTempl String
-           | EvalTempl ID (IO String)
 
-templID :: Templ -> ID
-templID (EvalTempl i _) = i
-templID _ = ""
+data TemplNode = TemplNode TagName (Maybe NodeID)
+
+data Templ a = CompositeTempl [Templ a]
+             | RawTempl String
+             | EvalTempl TemplNode (a -> String) (Maybe String)
 
 
 
