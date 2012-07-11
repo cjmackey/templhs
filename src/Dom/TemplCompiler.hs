@@ -21,6 +21,6 @@ escape (x:xs) = (case x of
 -}
 t2s :: InchoateTempl -> String
 t2s (Raw s) = "(RawTempl " ++ show s ++ ")"
-t2s (Eval n s) = "(EvalTempl (TemplNode " ++ show n ++ " Nothing) (\root -> (" ++ s ++ ")))"
+t2s (Eval n s) = "(EvalTempl (TemplNode " ++ show n ++ " Nothing) (\\root -> (" ++ s ++ ")))"
 
 
