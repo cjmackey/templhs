@@ -1,9 +1,19 @@
 module Dom.TemplParser where
 
 import Text.ParserCombinators.Parsec
+import Text.ParserCombinators.Parsec.Error -- (newErrorMessage, Message)
+import Text.Parsec.Pos (initialPos)
+import Text.Regex.Posix ((=~))
 
 import Dom.TemplTypes
 
+type Var = String
+
+data TemplDesc = TemplDesc TemplHead [InchoateTempl]
+                 deriving (Eq, Show)
+
+data TemplHead = TemplHead String Var
+                 deriving (Eq, Show)
 
 data InchoateTempl = Raw String
                    | Eval TagName String
@@ -18,6 +28,16 @@ simplifyTempls (a:b:xs) =
     _ -> a : simplifyTempls (b:xs)
 simplifyTempls x = x
 
+parseTemplHtml :: String -> Either ParseError TemplDesc
+parseTemplHtml s = case (parseHierarchy (bef ++ aft)) of
+  Left e -> Left e
+  Right h -> if length wd <= 3 
+             then Left (newErrorMessage (Message "Need templ header!") (initialPos ""))
+             else Right (TemplDesc (TemplHead templname templvar) h)
+  where (bef, during, aft) = s =~ "<\\?\\s+[Tt]empl\\s+([A-z\\.]+)\\s+([A-z]+)\\s+\\?>"
+        wd = words during
+        templname = wd !! 2
+        templvar = wd !! 3
 
 parseHierarchy :: String -> Either ParseError [InchoateTempl]
 parseHierarchy = parse hierarchyParser ""

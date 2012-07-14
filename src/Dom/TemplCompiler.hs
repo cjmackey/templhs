@@ -7,20 +7,13 @@ import Dom.TemplParser
 
 
 compile :: String -> Either ParseError String
-compile input = case parseHierarchy input of  
+compile input = case parseTemplHtml input of  
   Left e -> Left e
-  Right h -> Right ("(CompositeTempl [" ++ intercalate "," (map t2s h) ++ "])")
+  Right (TemplDesc (TemplHead name v) h) -> 
+    Right ("module " ++ name ++ " where\nimport Dom.Templ\ntempl = (CompositeTempl [" ++ intercalate "," (map (t2s v) h) ++ "])")
 
-{-
-escape :: String -> String
-escape [] = []
-escape (x:xs) = (case x of
-                    '\\' -> "\\"
-                    '"' -> "\\\""
-                    _ -> (x:[])) ++ escape xs
--}
-t2s :: InchoateTempl -> String
-t2s (Raw s) = "(RawTempl " ++ show s ++ ")"
-t2s (Eval n s) = "(EvalTempl (TemplNode " ++ show n ++ " Nothing) (\\root -> (" ++ s ++ ")))"
+t2s :: Var -> InchoateTempl -> String
+t2s _ (Raw s) = "(RawTempl " ++ show s ++ ")"
+t2s v (Eval n s) = "(EvalTempl (TemplNode " ++ show n ++ " Nothing) (\\" ++ v ++ " -> (" ++ s ++ ")))"
 
 

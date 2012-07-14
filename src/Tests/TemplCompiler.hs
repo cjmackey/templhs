@@ -12,7 +12,7 @@ import Dom.TemplCompiler
 {-# ANN module "HLint: ignore Use camelCase" #-}
 
 checkC :: String -> String -> IO ()
-checkC o t = [o] @=? rights [compile t]
+checkC o t = ["module Asdf where\nimport Dom.Templ\ntempl = " ++ o] @=? rights [compile ("<? Templ Asdf root ?>" ++ t)]
 
 case_blank = checkC "(CompositeTempl [])" ""
 case_raw = checkC "(CompositeTempl [(RawTempl \"asdf\")])" "asdf"

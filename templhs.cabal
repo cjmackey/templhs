@@ -18,10 +18,10 @@ executable templhs-compiler
   hs-source-dirs:      src
   main-is:             Compiler.hs
   ghc-options:         -O2 -Wall -fwarn-tabs -threaded
-  build-depends:       base ==4.5.*, bytestring, cmdargs, mtl, parsec, text, transformers
+  build-depends:       base ==4.5.*, bytestring, cmdargs, mtl, parsec, regex-posix, text, transformers
 
 executable templhs-tests
   hs-source-dirs:      src
   main-is:             Tests.hs
   ghc-options:         -O2 -Wall -fno-warn-missing-signatures -fwarn-tabs -fhpc -threaded
-  build-depends:       base ==4.5.*, bytestring, HUnit, mtl, parsec, test-framework, test-framework-hunit, test-framework-th, test-framework-quickcheck2, text, transformers
+  build-depends:       base ==4.5.*, bytestring, HUnit, mtl, parsec, regex-posix, test-framework, test-framework-hunit, test-framework-th, test-framework-quickcheck2, text, transformers
