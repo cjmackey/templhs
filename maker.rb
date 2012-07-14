@@ -40,6 +40,12 @@ def build
   build_cabal
 end
 
+def install
+  build
+  system('cabal install')
+  system('cd src ; hastec --libinstall -package-name templhs -I./include Dom.Templ')
+end
+
 def hlint
   system('mkdir -p dist')
   system('hlint src --report=dist/hlint.html')
@@ -47,7 +53,7 @@ end
 
 def test
   clean
-  build
+  install
   system('mkdir -p dist/hpc')
   system("./dist/build/templhs-tests/templhs-tests +RTS -N#{num_cpus}")
   raise "tests failed!" unless $?.success?

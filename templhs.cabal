@@ -25,3 +25,9 @@ executable templhs-tests
   main-is:             Tests.hs
   ghc-options:         -O2 -Wall -fno-warn-missing-signatures -fwarn-tabs -fhpc -threaded
   build-depends:       base ==4.5.*, bytestring, HUnit, mtl, parsec, regex-posix, test-framework, test-framework-hunit, test-framework-th, test-framework-quickcheck2, text, transformers
+
+Library
+  hs-source-dirs:      src
+  exposed-modules:     Dom.Templ Dom.TemplTypes Dom.TemplFunctions
+  ghc-options:         -O2 -Wall -fwarn-tabs -threaded
+  build-depends:       base ==4.5.*, bytestring, cmdargs, haste-compiler, mtl, parsec, regex-posix, text, transformers
