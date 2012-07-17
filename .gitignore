@@ -9,3 +9,7 @@ cabal-dev
 *~
 #*
 *.jsmod
+
+
+examples/asdf/Asdf.hs
+examples/asdf/Main.js
