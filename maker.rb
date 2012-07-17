@@ -64,6 +64,20 @@ def test
   puts('Point your browser at file://' + `pwd`.strip + '/dist/hpc/hpc_index.html')
 end
 
+def build_examples
+  Dir.glob("examples/*/build.sh") do |f|
+    system(f)
+    raise "example #{f} failed to build!" unless $?.success?
+  end
+end
+
+def integration_test
+  clean
+  install
+  build_examples
+  # todo: run test
+end
+
 start = DateTime.now
 runcount = 0
 ARGV.each do |x|
