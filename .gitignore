@@ -13,3 +13,6 @@ cabal-dev
 
 examples/asdf/Asdf.hs
 examples/asdf/Main.js
+examples/tests/Main
+selenium-server-standalone.jar
+

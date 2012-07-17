@@ -72,10 +72,22 @@ def build_examples
 end
 
 def integration_test
+  selenium = fork do
+    exec('java -jar selenium-server-standalone.jar')
+  end
+  t0 = Time.now.to_i
   clean
   install
   build_examples
-  # todo: run test
+  system('cd examples/tests ; ghc --make Main.hs')
+  raise "failed to build example tests!" unless $?.success?
+  # give time for the selenium server to start
+  sleep 0.1 until Time.now.to_i - t0 >= 5
+  system('cd examples/tests ; ./Main')
+  raise "examples failed!" unless $?.success?
+ensure
+  Process.kill("INT", selenium)
+  Process.waitpid(selenium)
 end
 
 start = DateTime.now
@@ -88,6 +100,9 @@ if runcount <= 0
   puts "Usage:   ./maker.rb [action1] [[action2]...]"
   puts "Example: ./maker.rb test"
 else
-  puts("started: #{start.to_s} finished: #{DateTime.now.to_s}")
+  finish = DateTime.now
+  diff = ((finish - start) * (24*60*60)).to_f
+  puts("started: #{start.to_s} finished: #{finish.to_s}")
+  puts("took #{diff} seconds")
 end
 
